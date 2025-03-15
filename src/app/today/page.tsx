@@ -492,7 +492,7 @@ export default function Today() {
               type="text"
               value={input}
               onChange={handleInputChange}
-              placeholder="Ask for help with your tasks..."
+              placeholder="Type a question about your tasks or schedule..."
               className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
