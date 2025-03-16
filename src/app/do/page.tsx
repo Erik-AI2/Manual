@@ -100,7 +100,7 @@ export default function Do() {
     <main className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Tasks</h1>
       <div className="space-y-6">
-        <TaskForm onTaskAdded={fetchTasks} defaultStatus="do" />
+        <TaskForm onTaskAdded={fetchTasks} defaultStatus="active" />
         <div className="space-y-4">
           {tasks.map((task) => (
             <div 
