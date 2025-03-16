@@ -32,7 +32,6 @@ export default function TaskEditModal({
   const handleSave = async () => {
     await onSave({
       text: title,
-      description,
       dueDate,
       projectId: selectedProject || null,
       isNonNegotiable,
