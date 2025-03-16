@@ -2,15 +2,23 @@
 
 import { useState } from 'react';
 import { addProject } from '@/lib/firebase/firebaseUtils';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function ProjectForm() {
   const [name, setName] = useState('');
   const [color, setColor] = useState('#000000');
+  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+    
     try {
-      await addProject({
+      await addProject(user.uid, {
         name,
         color
       });
