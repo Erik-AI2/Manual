@@ -1,22 +1,21 @@
-import { openai } from "@ai-sdk/openai";
-import { convertToCoreMessages, streamText } from "ai";
+import { NextResponse } from 'next/server';
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
-  const result = await streamText({
-    model: openai("gpt-4o"),
-    messages: convertToCoreMessages(messages),
-    system: "You are an Offer AI Assistant specialized in helping users create effective offers based on Alex Hormozi's framework. Your goal is to assist with offer ideation, structure, pricing, and delivery methods. Provide actionable advice that helps users create high-value, irresistible offers. Draw from offer creation best practices and the principles of value creation, pricing psychology, and urgency/scarcity when appropriate.",
-  });
-
-  return result.toDataStreamResponse({
-    getErrorMessage: (error) => {
-      if (error instanceof Error) {
-        return error.message;
-      }
-      return String(error);
-    }
-  });
+  try {
+    const { messages } = await req.json();
+    
+    // Simple placeholder response
+    return NextResponse.json({
+      message: "This is a placeholder response from the OpenAI API route. The actual OpenAI integration will be implemented soon.",
+      receivedMessages: messages
+    });
+  } catch (error) {
+    console.error('Error in OpenAI chat API:', error);
+    return NextResponse.json(
+      { error: 'An error occurred during the API call' },
+      { status: 500 }
+    );
+  }
 }
