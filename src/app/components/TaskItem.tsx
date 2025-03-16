@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { updateTask } from '@/lib/firebase/firebaseUtils';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 interface Task {
   id: string;
@@ -20,7 +21,8 @@ interface TaskItemProps {
 }
 
 export default function TaskItem({ task, onComplete }: TaskItemProps) {
-  const [isCompleted, setIsCompleted] = useState(task.completed || false);
+  const [isCompleted, setIsCompleted] = useState(task.completed);
+  const { user } = useAuth();
   
   // For debugging
   console.log('Task in TaskItem:', {
@@ -30,19 +32,24 @@ export default function TaskItem({ task, onComplete }: TaskItemProps) {
     completed: task.completed
   });
 
-  const handleComplete = async () => {
+  const handleToggleComplete = async () => {
+    if (!user) {
+      console.error('User not authenticated');
+      return;
+    }
+
     const newCompletedState = !isCompleted;
     setIsCompleted(newCompletedState);
     
     try {
-      await updateTask(task.id, { completed: newCompletedState });
+      await updateTask(user.uid, task.id, { completed: newCompletedState });
       if (onComplete) {
         onComplete(task.id, newCompletedState);
       }
     } catch (error) {
       console.error('Error updating task:', error);
-      // Revert state if update fails
-      setIsCompleted(!newCompletedState);
+      // Revert UI state on error
+      setIsCompleted(isCompleted);
     }
   };
 
@@ -58,7 +65,7 @@ export default function TaskItem({ task, onComplete }: TaskItemProps) {
         <input
           type="checkbox"
           checked={isCompleted}
-          onChange={handleComplete}
+          onChange={handleToggleComplete}
           className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
       </div>
