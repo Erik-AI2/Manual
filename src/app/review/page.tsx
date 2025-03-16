@@ -146,7 +146,8 @@ export default function DailyReview() {
       priority: 'high',
       projectId: selectedProject || undefined,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      userId: user?.uid || '' // Add the userId property
     };
     
     setNonNegotiableTasks((prev) => {
