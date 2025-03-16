@@ -172,6 +172,8 @@ export default function Do() {
               </div>
               <button
                 onClick={async () => {
+                  if (!user) return;
+                  
                   try {
                     await deleteDocument(user.uid, 'tasks', task.id);
                     await fetchTasks();
