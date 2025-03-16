@@ -101,11 +101,14 @@ export default function ProjectList() {
     if (!newProjectName.trim()) return;
 
     try {
-      await addDocument('projects', {
+      if (!user?.uid) return;
+
+      await addDocument(user.uid, 'projects', {
         name: newProjectName.trim(),
         color: selectedColor,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        userId: user.uid
       });
       setNewProjectName('');
       setSelectedColor(PROJECT_COLORS[0].value);
