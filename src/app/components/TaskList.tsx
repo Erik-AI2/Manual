@@ -63,7 +63,7 @@ function TaskListContent() {
     <div className="space-y-4">
       {tasks.map((task) => (
         <div key={task.id} className="p-4 bg-white rounded shadow">
-          <h3 className="font-medium">{task.text || task.description}</h3>
+          <h3 className="font-medium">{task.text || 'Untitled Task'}</h3>
           {task.dueDate && (
             <p className="text-sm text-gray-500">
               Due: {new Date(task.dueDate).toLocaleDateString()}
