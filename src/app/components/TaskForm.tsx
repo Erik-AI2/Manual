@@ -20,12 +20,7 @@ export default function TaskForm() {
     }
     
     try {
-      await addTask(user.uid, {
-        description,
-        dueDate,
-        priority,
-        isNonNegotiable
-      });
+      await addTask(user.uid, description);
       
       // Clear form
       setDescription('');
