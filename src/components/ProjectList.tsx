@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Plus, ChevronLeft, Trash2, Edit2 } from 'lucide-react';
-import { addDocument, getDocuments, deleteDocument, updateDocument, getUserData, getProjects, getTasks } from '@/lib/firebase/firebaseUtils';
+import { addDocument, getDocuments, deleteDocument, updateDocument, getProjects, getTasks } from '@/lib/firebase/firebaseUtils';
 import { Project, Task } from '@/lib/types/task';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
