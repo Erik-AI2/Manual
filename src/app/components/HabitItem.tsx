@@ -45,42 +45,28 @@ export default function HabitItem({ habit, onUpdate }: HabitItemProps) {
   };
 
   return (
-    <div className={`flex items-start gap-3 ${isCompleted ? 'opacity-50' : ''}`}>
-      <div className="mt-1">
+    <div className="p-4 border rounded-lg mb-2 flex items-center justify-between">
+      <div className="flex items-center">
         <input
           type="checkbox"
           checked={isCompleted}
           onChange={handleToggleComplete}
-          className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          className="mr-3 h-5 w-5"
         />
-      </div>
-      
-      <div className="flex-1">
-        <div className="flex items-center gap-2">
-          <h4 className={`text-lg font-medium ${isCompleted ? 'line-through' : ''}`}>
+        <div>
+          <h3 className={`font-medium ${isCompleted ? 'line-through text-gray-500' : ''}`}>
             {habit.title}
-          </h4>
-          {habit.isNonNegotiable && (
-            <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded">
-              Non-Negotiable
-            </span>
-          )}
-          {habit.frequency && (
-            <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">
-              {habit.frequency}
-            </span>
-          )}
-          {habit.streak !== undefined && habit.streak > 0 && (
-            <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-0.5 rounded">
-              🔥 {habit.streak}
-            </span>
+          </h3>
+          {habit.description && (
+            <p className="text-sm text-gray-600">{habit.description}</p>
           )}
         </div>
-        
-        {habit.description && (
-          <p className="text-gray-600 mt-1">{habit.description}</p>
-        )}
       </div>
+      {habit.isNonNegotiable && (
+        <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">
+          Non-negotiable
+        </span>
+      )}
     </div>
   );
 } 

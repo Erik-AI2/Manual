@@ -23,7 +23,7 @@ export default function NonNegotiableTaskInput({ onTaskAdded, maxTasks = 3, curr
 
     try {
       await addTask(user.uid, taskDescription);
-
+      
       setTaskDescription('');
       onTaskAdded?.();
     } catch (error) {
@@ -38,20 +38,20 @@ export default function NonNegotiableTaskInput({ onTaskAdded, maxTasks = 3, curr
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex items-center gap-2 mt-4">
       <input
         type="text"
         value={taskDescription}
         onChange={(e) => setTaskDescription(e.target.value)}
         onKeyPress={handleKeyPress}
-        className="flex-1 p-2 border rounded"
-        placeholder="Add a non-negotiable task for tomorrow and press Enter"
+        placeholder="Add a non-negotiable task for tomorrow"
+        className="flex-1 p-2 border rounded-lg"
         disabled={currentTaskCount >= maxTasks}
       />
       <button
         onClick={handleAddTask}
-        disabled={currentTaskCount >= maxTasks}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+        className="px-4 py-2 bg-purple-600 text-white rounded-lg disabled:bg-gray-300"
+        disabled={currentTaskCount >= maxTasks || !taskDescription}
       >
         Add
       </button>
