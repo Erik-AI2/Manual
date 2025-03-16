@@ -42,7 +42,10 @@ export default function TaskItem({ task, onComplete }: TaskItemProps) {
     setIsCompleted(newCompletedState);
     
     try {
-      await updateTask(user.uid, task.id, { completed: newCompletedState });
+      await updateTask(user.uid, task.id, { 
+        isCompleted: newCompletedState 
+      });
+      
       if (onComplete) {
         onComplete(task.id, newCompletedState);
       }
