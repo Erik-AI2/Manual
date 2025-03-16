@@ -36,7 +36,7 @@ export default function Do() {
     
     try {
       console.log('Fetching tasks from Firebase...');
-      const fetchedTasks = await getDocuments(user.uid, 'tasks');
+      const fetchedTasks = await getDocuments(user.uid, 'tasks') as Task[];
       console.log('All fetched tasks:', fetchedTasks);
       
       const doTasks = fetchedTasks.filter(task => 
@@ -55,8 +55,10 @@ export default function Do() {
   };
 
   const toggleTaskCompletion = async (taskId: string, completed: boolean) => {
+    if (!user) return;
+    
     try {
-      await updateDocument('tasks', taskId, { completed });
+      await updateDocument(user.uid, 'tasks', taskId, { completed });
       await fetchTasks();
     } catch (error) {
       console.error('Error updating task:', error);
@@ -75,8 +77,10 @@ export default function Do() {
   };
 
   const saveEdit = async (taskId: string) => {
+    if (!user) return;
+    
     try {
-      await updateDocument('tasks', taskId, {
+      await updateDocument(user.uid, 'tasks', taskId, {
         text: editingTask.text,
         dueDate: editingTask.dueDate || null,
         isNonNegotiable: editingTask.isNonNegotiable
