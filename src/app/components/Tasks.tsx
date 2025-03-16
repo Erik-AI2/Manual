@@ -73,9 +73,9 @@ export default function Tasks() {
           className="p-4 bg-white rounded-lg shadow flex items-center justify-between"
         >
           <div>
-            <p className="text-gray-800">{task.description}</p>
+            <p className="text-gray-800">{task.text}</p>
             <p className="text-sm text-gray-500">
-              Due: {task.dueDate.toLocaleDateString()}
+              Due: {new Date(task.dueDate).toLocaleDateString()}
             </p>
           </div>
           <div className="flex items-center gap-2">
