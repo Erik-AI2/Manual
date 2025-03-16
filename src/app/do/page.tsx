@@ -1,10 +1,10 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Trash2 } from 'lucide-react';
 import { getDocuments, updateDocument, deleteDocument } from '../../lib/firebase/firebaseUtils';
 import TaskForm from '../../components/TaskForm';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 interface Task {
   id: string;
@@ -24,21 +24,33 @@ export default function Do() {
     dueDate: '',
     isNonNegotiable: false
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   const fetchTasks = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    
     try {
       console.log('Fetching tasks from Firebase...');
-      const fetchedTasks = await getDocuments('tasks');
+      const fetchedTasks = await getDocuments(user.uid, 'tasks');
       console.log('All fetched tasks:', fetchedTasks);
       
       const doTasks = fetchedTasks.filter(task => 
-        task.status === 'do'
+        task.status !== 'completed'
       );
       
       console.log('Filtered today\'s tasks:', doTasks);
       setTasks(doTasks);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching tasks:', err);
+      setError('Failed to load tasks');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +90,7 @@ export default function Do() {
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [user]);
 
   return (
     <main className="p-8 max-w-4xl mx-auto">
