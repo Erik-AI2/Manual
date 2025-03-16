@@ -335,7 +335,7 @@ export default function DailyReview() {
         addNonNegotiableTask(user.uid, {
           text: task.text,
           dueDate: tomorrow, // Set to tomorrow
-          projectId: task.projectId
+          projectId: task.projectId || undefined
         })
       );
 
