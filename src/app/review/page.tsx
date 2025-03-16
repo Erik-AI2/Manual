@@ -143,7 +143,7 @@ export default function DailyReview() {
       dueDate: tomorrow.toISOString(), // Consistent date format
       isNonNegotiable: true,
       status: 'active',
-      priority: 'important',
+      priority: 'high',
       projectId: selectedProject || undefined,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
