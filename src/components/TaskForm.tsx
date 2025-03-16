@@ -141,7 +141,7 @@ export default function TaskForm({ onTaskAdded, defaultIsNonNegotiable, defaultD
               <input
                 type="date"
                 value={typeof task.dueDate === 'object' && task.dueDate && 'toDate' in task.dueDate
-                  ? task.dueDate.toDate().toISOString().split('T')[0]
+                  ? (task.dueDate as unknown as Timestamp).toDate().toISOString().split('T')[0]
                   : task.dueDate 
                     ? new Date(task.dueDate as string).toISOString().split('T')[0] 
                     : ''
