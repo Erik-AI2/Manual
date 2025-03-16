@@ -23,8 +23,6 @@ export default function TaskForm({ onTaskAdded, defaultIsNonNegotiable, defaultD
     status: 'active',
     isNonNegotiable: false,
     priority: 'low',
-    timeEstimate: undefined,
-    recurrence: undefined,
   });
 
   const [showRecurrence, setShowRecurrence] = useState(false);
@@ -47,8 +45,6 @@ export default function TaskForm({ onTaskAdded, defaultIsNonNegotiable, defaultD
         status: 'active' as const,
         isNonNegotiable: false,
         priority: 'low',
-        timeEstimate: undefined,
-        recurrence: undefined,
       });
       setIsExpanded(false);
       setShowRecurrence(false);
