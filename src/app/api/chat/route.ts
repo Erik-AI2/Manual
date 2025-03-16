@@ -6,10 +6,10 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
     
-    // Simple placeholder response
+    // Simple response for now - we can replace this with actual implementation later
     return NextResponse.json({
-      message: "This is a placeholder response. The actual AI integration will be implemented soon.",
-      receivedMessages: messages
+      message: "AI response placeholder",
+      content: "This is a placeholder response. Real AI integration will be added after deployment issues are fixed."
     });
   } catch (error) {
     console.error('Error in chat API:', error);

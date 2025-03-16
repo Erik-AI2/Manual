@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { Task, getTasks } from '@/lib/firebase/firebaseUtils';
+import { getTasks } from '@/lib/firebase/firebaseUtils';
+import { Task } from '@/lib/types/task';
 
 export default function Tasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
