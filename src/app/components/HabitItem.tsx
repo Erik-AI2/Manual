@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { updateHabit } from '@/lib/firebase/firebaseUtils';
+// Remove the import for updateHabit since it doesn't exist
+// import { updateHabit } from '@/lib/firebase/firebaseUtils';
 
 interface Habit {
   id: string;
@@ -15,11 +16,11 @@ interface Habit {
 
 interface HabitItemProps {
   habit: Habit;
-  onComplete?: (habitId: string, completed: boolean) => void;
+  onUpdate?: (habit: Habit) => void;
 }
 
-export default function HabitItem({ habit, onComplete }: HabitItemProps) {
-  const [isCompleted, setIsCompleted] = useState(habit.completed || false);
+export default function HabitItem({ habit, onUpdate }: HabitItemProps) {
+  const [isCompleted, setIsCompleted] = useState(habit.completed);
   
   // For debugging
   console.log('Habit in HabitItem:', {
@@ -30,28 +31,17 @@ export default function HabitItem({ habit, onComplete }: HabitItemProps) {
     streak: habit.streak
   });
 
-  const handleComplete = async () => {
-    const newCompletedState = !isCompleted;
-    setIsCompleted(newCompletedState);
+  const handleToggleComplete = async () => {
+    const updatedHabit = { ...habit, completed: !isCompleted };
+    setIsCompleted(!isCompleted);
     
-    try {
-      // Calculate new streak if needed
-      const updatedFields: any = { completed: newCompletedState };
-      if (newCompletedState && habit.streak !== undefined) {
-        updatedFields.streak = (habit.streak || 0) + 1;
-      } else if (!newCompletedState && habit.streak !== undefined) {
-        updatedFields.streak = Math.max(0, (habit.streak || 0) - 1);
-      }
-      
-      await updateHabit(habit.id, updatedFields);
-      if (onComplete) {
-        onComplete(habit.id, newCompletedState);
-      }
-    } catch (error) {
-      console.error('Error updating habit:', error);
-      // Revert state if update fails
-      setIsCompleted(!newCompletedState);
+    // Call the onUpdate prop instead of directly calling updateHabit
+    if (onUpdate) {
+      onUpdate(updatedHabit);
     }
+    
+    // If we need to implement direct Firebase updates later, we can add it here
+    // For now, we'll rely on the parent component to handle updates
   };
 
   return (
@@ -60,7 +50,7 @@ export default function HabitItem({ habit, onComplete }: HabitItemProps) {
         <input
           type="checkbox"
           checked={isCompleted}
-          onChange={handleComplete}
+          onChange={handleToggleComplete}
           className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
       </div>
