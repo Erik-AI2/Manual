@@ -173,7 +173,7 @@ export default function Do() {
               <button
                 onClick={async () => {
                   try {
-                    await deleteDocument('tasks', task.id);
+                    await deleteDocument(user.uid, 'tasks', task.id);
                     await fetchTasks();
                   } catch (error) {
                     console.error('Error deleting task:', error);
