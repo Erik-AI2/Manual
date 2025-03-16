@@ -17,27 +17,45 @@ interface Props {
 }
 
 export default function TaskPlanner({ stage, mainFocus }: Props) {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [nonNegotiableTasks, setNonNegotiableTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
-  const loadTasks = async () => {
-    if (!user) return;
-    
-    // Get tomorrow's tasks that are non-negotiable
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    const tomorrowTasks = await getTasks({
-      userId: user.uid,
-      dueDate: tomorrow,
-      isNonNegotiable: true
-    });
-    
-    setTasks(tomorrowTasks);
-  };
-
   useEffect(() => {
-    loadTasks();
+    const fetchTasks = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Get tomorrow's date
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        // Fix: getTasks expects just the userId parameter
+        const tasks = await getTasks(user.uid);
+        
+        // Filter for tomorrow's non-negotiable tasks after retrieving them
+        const tomorrowNonNegotiables = tasks.filter(task => {
+          const taskDate = new Date(task.dueDate);
+          return (
+            task.isNonNegotiable &&
+            taskDate.getFullYear() === tomorrow.getFullYear() &&
+            taskDate.getMonth() === tomorrow.getMonth() &&
+            taskDate.getDate() === tomorrow.getDate()
+          );
+        });
+        
+        setNonNegotiableTasks(tomorrowNonNegotiables);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
   }, [user]);
 
   return (
@@ -48,20 +66,19 @@ export default function TaskPlanner({ stage, mainFocus }: Props) {
 
         {/* Task input */}
         <NonNegotiableTaskInput 
-          onTaskAdded={loadTasks}
+          onTaskAdded={() => {}}
           maxTasks={3}
-          currentTaskCount={tasks.length}
+          currentTaskCount={nonNegotiableTasks.length}
         />
 
         {/* Task list */}
         <div className="space-y-2 mt-6">
-          {tasks.map((task) => (
+          {nonNegotiableTasks.map((task) => (
             <div key={task.id} className="p-3 bg-blue-50 rounded-lg flex justify-between items-center">
               <p className="font-medium">{task.description}</p>
               <button
                 onClick={async () => {
                   await deleteTask(task.id);
-                  loadTasks();
                 }}
                 className="text-red-600 hover:text-red-800"
               >
