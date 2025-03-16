@@ -630,7 +630,7 @@ export default function DailyReview() {
                     const input = document.getElementById('hoursInput');
                     if (input) {
                       input.focus();
-                      input.select();
+                      (input as HTMLInputElement).select();
                     }
                   }}
                 >
