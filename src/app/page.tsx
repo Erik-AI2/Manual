@@ -49,8 +49,17 @@ export default function Home() {
       // ... other review data
     };
     
-    // Call API or update state to mark review as complete
-    completeReview(reviewData);
+    console.log('Review completed with data:', reviewData);
+    
+    // If you need to save the data to Firebase, you could do:
+    if (user?.uid) {
+      addDocument(user.uid, 'reviews', {
+        ...reviewData,
+        createdAt: new Date().toISOString()
+      }).catch(error => {
+        console.error('Error saving review:', error);
+      });
+    }
     
     // Navigate or show completion message
     // ... existing completion logic ...
