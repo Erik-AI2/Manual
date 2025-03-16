@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { addProject } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { Project } from '@/lib/types/task';
 
 interface ProjectFormProps {
   onProjectAdded?: (project: Project) => void;
