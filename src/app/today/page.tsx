@@ -182,8 +182,17 @@ export default function Today() {
         return 0;
       });
 
-      setItems(sortedItems);
-      updateTaskContext(sortedItems);
+      // We need to modify the sortedItems to ensure the priority is either "important" or "flexible"
+      const typedItems = sortedItems.map(item => ({
+        ...item,
+        // Convert any priority string to either "important" or "flexible"
+        priority: item.priority === 'high' || item.priority === 'non-negotiable' 
+          ? 'important' 
+          : 'flexible'
+      })) as DueItem[];
+
+      setItems(typedItems);
+      updateTaskContext(typedItems);
     } catch (err) {
       console.error('Error fetching today\'s items:', err);
       setError('Failed to load today\'s items');
