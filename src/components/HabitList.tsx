@@ -47,7 +47,7 @@ export default function HabitList() {
         timeOfDay: habit.timeOfDay || 'morning',
         createdAt: habit.createdAt,
         updatedAt: habit.updatedAt,
-        userId: habit.userId
+        userId: user?.uid || ''
       }));
 
       setHabits(validHabits);
