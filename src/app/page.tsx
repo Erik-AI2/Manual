@@ -41,17 +41,19 @@ export default function Home() {
     }
   };
 
+  const handlePrevious = () => {
+    console.log('Going to previous step');
+    setHasProvenOffer(null);
+  };
+
   const handleCompleteReview = () => {
-    // Save review data, potentially including workPriorities if hasProvenOffer is true
     const reviewData = {
       hasProvenOffer,
       ...(hasProvenOffer ? { workPriorities } : {}),
-      // ... other review data
     };
     
     console.log('Review completed with data:', reviewData);
     
-    // If you need to save the data to Firebase, you could do:
     if (user?.uid) {
       addDocument(user.uid, 'reviews', {
         ...reviewData,
@@ -60,9 +62,6 @@ export default function Home() {
         console.error('Error saving review:', error);
       });
     }
-    
-    // Navigate or show completion message
-    // ... existing completion logic ...
   };
 
   if (loading) {
