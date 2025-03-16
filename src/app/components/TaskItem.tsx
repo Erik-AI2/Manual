@@ -43,7 +43,7 @@ export default function TaskItem({ task, onComplete }: TaskItemProps) {
     
     try {
       await updateTask(user.uid, task.id, { 
-        isCompleted: newCompletedState 
+        completed: newCompletedState 
       });
       
       if (onComplete) {
