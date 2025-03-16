@@ -24,7 +24,7 @@ export default function TaskEditModal({
   }
 
   const [title, setTitle] = useState(task.text);
-  const [description, setDescription] = useState(task.description || '');
+  const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState(task.dueDate || '');
   const [selectedProject, setSelectedProject] = useState(task.projectId || '');
   const [isNonNegotiable, setIsNonNegotiable] = useState(task.isNonNegotiable || false);
