@@ -7,6 +7,7 @@ import { Project } from '@/lib/types/task';
 
 interface ProjectFormProps {
   onProjectAdded?: (project: Project) => void;
+  onClose: () => void;
 }
 
 export default function ProjectForm({ onProjectAdded }: ProjectFormProps) {
