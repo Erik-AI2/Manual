@@ -101,8 +101,8 @@ export default function DailyReview() {
         setTodaysNonNegotiables(tasks.map(task => ({
           ...task,
           dueDate: task.dueDate ? (typeof task.dueDate === 'string' ? task.dueDate : task.dueDate.toISOString()) : new Date().toISOString(),
-          createdAt: task.createdAt || new Date().toISOString(),
-          updatedAt: task.updatedAt || new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         })));
         setTodaysNonNegotiableHabits(nonNegotiableHabits);
         
