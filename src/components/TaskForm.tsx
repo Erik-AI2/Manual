@@ -22,7 +22,7 @@ export default function TaskForm({ onTaskAdded, defaultIsNonNegotiable, defaultD
     text: '',
     status: 'active',
     isNonNegotiable: false,
-    priority: 'flexible',
+    priority: 'low',
     timeEstimate: undefined,
     recurrence: undefined,
   });
@@ -46,7 +46,7 @@ export default function TaskForm({ onTaskAdded, defaultIsNonNegotiable, defaultD
         text: '',
         status: 'active' as const,
         isNonNegotiable: false,
-        priority: 'flexible',
+        priority: 'low',
         timeEstimate: undefined,
         recurrence: undefined,
       });
@@ -333,7 +333,7 @@ export default function TaskForm({ onTaskAdded, defaultIsNonNegotiable, defaultD
                     text: '',
                     status: 'active',
                     isNonNegotiable: false,
-                    priority: 'flexible',
+                    priority: 'low',
                   });
                 }}
                 className="px-4 py-2 text-gray-600 hover:text-gray-800"
