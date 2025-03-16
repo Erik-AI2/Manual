@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BusinessStage } from './BusinessSequenceChecker';
 import NonNegotiableTaskInput from './NonNegotiableTaskInput';
-import { getTasks } from '@/lib/firebase/firebaseUtils';
+import { getTasks, deleteDocument } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { Task as GlobalTask } from '@/lib/types/task';
 
 interface Task {
   id: string;
@@ -33,19 +34,27 @@ export default function TaskPlanner({ stage, mainFocus }: Props) {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         
-        // Fix: getTasks expects just the userId parameter
+        // Get all tasks for the user
         const tasks = await getTasks(user.uid);
         
-        // Filter for tomorrow's non-negotiable tasks after retrieving them
-        const tomorrowNonNegotiables = tasks.filter(task => {
-          const taskDate = new Date(task.dueDate);
-          return (
-            task.isNonNegotiable &&
-            taskDate.getFullYear() === tomorrow.getFullYear() &&
-            taskDate.getMonth() === tomorrow.getMonth() &&
-            taskDate.getDate() === tomorrow.getDate()
-          );
-        });
+        // Filter for tomorrow's non-negotiable tasks and map to our local Task interface
+        const tomorrowNonNegotiables = tasks
+          .filter(task => {
+            const taskDate = new Date(task.dueDate);
+            return (
+              task.isNonNegotiable &&
+              taskDate.getFullYear() === tomorrow.getFullYear() &&
+              taskDate.getMonth() === tomorrow.getMonth() &&
+              taskDate.getDate() === tomorrow.getDate()
+            );
+          })
+          .map(task => ({
+            id: task.id,
+            // Map 'text' to 'description'
+            description: task.text,
+            dueDate: new Date(task.dueDate),
+            isNonNegotiable: task.isNonNegotiable
+          }));
         
         setNonNegotiableTasks(tomorrowNonNegotiables);
       } catch (error) {
@@ -57,6 +66,18 @@ export default function TaskPlanner({ stage, mainFocus }: Props) {
 
     fetchTasks();
   }, [user]);
+
+  const deleteTask = async (taskId: string) => {
+    if (!user) return;
+    
+    try {
+      await deleteDocument(user.uid, 'tasks', taskId);
+      // Update the local state to reflect the deletion
+      setNonNegotiableTasks(prev => prev.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
 
   return (
     <div className="space-y-6">
