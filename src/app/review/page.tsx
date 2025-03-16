@@ -98,7 +98,11 @@ export default function DailyReview() {
         const nonNegotiableHabits = habits.filter(habit => habit.isNonNegotiable === true);
         console.log('Non-negotiable habits:', nonNegotiableHabits);
         
-        setTodaysNonNegotiables(tasks);
+        setTodaysNonNegotiables(tasks.map(task => ({
+          ...task,
+          createdAt: task.createdAt || new Date().toISOString(),
+          updatedAt: task.updatedAt || new Date().toISOString()
+        })));
         setTodaysNonNegotiableHabits(nonNegotiableHabits);
         
         // Check if all tasks and non-negotiable habits are completed
