@@ -56,10 +56,25 @@ export default function TaskItem({ task, onComplete }: TaskItemProps) {
     }
   };
 
-  const priorityColors = {
+  // Fix: Add index signature to priorityColors
+  const priorityColors: { [key: string]: string } = {
     low: 'bg-blue-100 text-blue-800',
     medium: 'bg-yellow-100 text-yellow-800',
     high: 'bg-red-100 text-red-800'
+  };
+
+  // Alternatively, we could use a type-safe approach:
+  const getPriorityColor = (priority: string): string => {
+    switch (priority.toLowerCase()) {
+      case 'low':
+        return 'bg-blue-100 text-blue-800';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'high':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800'; // Fallback color
+    }
   };
 
   return (
@@ -84,7 +99,7 @@ export default function TaskItem({ task, onComplete }: TaskItemProps) {
             </span>
           )}
           {task.priority && (
-            <span className={`text-xs font-medium px-2 py-0.5 rounded ${priorityColors[task.priority]}`}>
+            <span className={`text-xs font-medium px-2 py-0.5 rounded ${getPriorityColor(task.priority)}`}>
               {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
             </span>
           )}
