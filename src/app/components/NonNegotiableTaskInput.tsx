@@ -22,8 +22,7 @@ export default function NonNegotiableTaskInput({ onTaskAdded, maxTasks = 3, curr
     if (!user || !taskDescription || currentTaskCount >= maxTasks) return;
 
     try {
-      await addTask({
-        userId: user.uid,
+      await addTask(user.uid, {
         description: taskDescription,
         dueDate: getTomorrowDate(),
         priority: 'high',
