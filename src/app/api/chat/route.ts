@@ -1,16 +1,21 @@
-
-import { openai } from "@ai-sdk/openai";
-import { convertToCoreMessages, streamText } from "ai";
+import { NextResponse } from 'next/server';
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
-  const result = await streamText({
-    model: openai("gpt-4o"),
-    messages: convertToCoreMessages(messages),
-    system: "You are a helpful AI assistant",
-  });
-
-  return result.toDataStreamResponse();
+  try {
+    const { messages } = await req.json();
+    
+    // Simple placeholder response
+    return NextResponse.json({
+      message: "This is a placeholder response. The actual AI integration will be implemented soon.",
+      receivedMessages: messages
+    });
+  } catch (error) {
+    console.error('Error in chat API:', error);
+    return NextResponse.json(
+      { error: 'An error occurred during the API call' },
+      { status: 500 }
+    );
+  }
 }
